@@ -49,6 +49,10 @@ finder.on('end', function () {
     res.send({movies: movies});
   });
 
+  videoLoader.get('/movies/:id', function(req, res){
+    res.send({movie: movies[req.params.id]});
+  });
+
   var server = videoLoader.listen(3000, function() {
     console.log('Listening on port %d', server.address().port);
   });
