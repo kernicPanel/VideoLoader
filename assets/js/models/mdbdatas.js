@@ -9,6 +9,8 @@ VideoLoader.Mdbdata = DS.Model.extend({
   poster_path: DS.attr('string'),
   popularity: DS.attr('number'),
   title: DS.attr('string'),
+  overview: DS.attr('string'),
+  image: DS.attr('string'),
   vote_average: DS.attr('number'),
   vote_count: DS.attr('number')
 });

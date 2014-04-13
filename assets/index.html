@@ -4,13 +4,18 @@
   <meta charset="utf-8">
   <title>VideoLoader</title>
   <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/foundation.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <script type="text/x-handlebars">
-    <h2>VideoLoader</h2>
-
-    {{outlet}}
+    <div class="row">
+      <div class="twelve columns">
+        <h1>VideoLoader</h1>
+        <hr>
+        {{outlet}}
+      </div>
+    </div>
   </script>
 
   <script type="text/x-handlebars" id="index">
@@ -32,15 +37,20 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="movie">
-    <a href="/#">back</a>
+    <a href="#/">back</a>
+    {{link-to 'Back to Home' 'application' }}
+
 
     <h3>{{name}}</h3>
     <p>{{path}}</p>
-    <ul>
+    <div>
       {{#each mdbdatas}}
-        <li>{{title}}</li>
+        <div>
+          <h4>{{title}}</h4>
+          <p><img class="recipe-image" {{bind-attr src="image"}} /></p>
+        </div>
       {{/each}}
-    </ul>
+    </div>
 
   </script>
 

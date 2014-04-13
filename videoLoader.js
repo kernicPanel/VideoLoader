@@ -62,13 +62,33 @@ finder.on('end', function () {
       for (var i=0; i < mdbRes.results.length; ++i) {
         var result = mdbRes.results[i];
         movie.mdbdatas.push(result.id);
+        mdbdatas[i]['image'] = "http://image.tmdb.org/t/p/w154" + result.poster_path;
       }
+
+      console.log("mdbdatas : ", mdbdatas);
 
       res.send({
         movie: movie,
         mdbdatas: mdbdatas
       });
     });
+  });
+
+  videoLoader.get('/mdbdata?:ids', function(req, res){
+    var ids = req.query.ids;
+    var mdbdatas = [];
+    for (var i=0; i < ids.length; ++i) {
+      var id = ids[i];
+      mdb.movieInfo({id: id}, function(err, mdbRes){
+        console.log(mdbRes);
+        mdbdatas.push(mdbRes);
+        if (i === ids.length) {
+          res.send({
+            mdbdatas: mdbdatas
+          });
+        }
+      });
+    }
   });
 
   var server = videoLoader.listen(3000, function() {
