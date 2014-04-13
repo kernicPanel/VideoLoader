@@ -2,10 +2,14 @@ var express = require('express');
 var videoLoader = express();
 videoLoader.use(express.static(__dirname + '/assets'));
 
+var credential = require('./credential.js');
+var mdb = require('moviedb')(credential.themoviedb.apiKey);
+console.log("moviedb credential : ", credential.themoviedb.apiKey);
+
 var finder = require('findit')('/home/nc/1pad/movies');
 var path = require('path');
 var movies = [];
-var index = 1;
+var index = 0;
 
 finder.on('directory', function (dir, stat, stop) {
   var base = path.basename(dir);
@@ -14,7 +18,7 @@ finder.on('directory', function (dir, stat, stop) {
 });
 
 finder.on('file', function (file, stat) {
-  console.log(file);
+  //console.log(file);
   movies.push({
     id: index++,
     path: file,
@@ -50,7 +54,21 @@ finder.on('end', function () {
   });
 
   videoLoader.get('/movies/:id', function(req, res){
-    res.send({movie: movies[req.params.id]});
+    var movie = movies[req.params.id];
+    mdb.searchMovie({query: movie.name }, function(err, mdbRes){
+      console.log("===>", mdbRes);
+      var mdbdatas = mdbRes.results;
+      movie.mdbdatas =[];
+      for (var i=0; i < mdbRes.results.length; ++i) {
+        var result = mdbRes.results[i];
+        movie.mdbdatas.push(result.id);
+      }
+
+      res.send({
+        movie: movie,
+        mdbdatas: mdbdatas
+      });
+    });
   });
 
   var server = videoLoader.listen(3000, function() {

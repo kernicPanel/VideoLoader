@@ -2,13 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Ember Starter Kit</title>
+  <title>VideoLoader</title>
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <script type="text/x-handlebars">
-    <h2>Welcome to Ember.js</h2>
+    <h2>VideoLoader</h2>
 
     {{outlet}}
   </script>
@@ -36,6 +36,11 @@
 
     <h3>{{name}}</h3>
     <p>{{path}}</p>
+    <ul>
+      {{#each mdbdatas}}
+        <li>{{title}}</li>
+      {{/each}}
+    </ul>
 
   </script>
 
@@ -46,6 +51,7 @@
   <script src="js/application.js"></script>
   <script src="js/router.js"></script>
   <script src="js/models/movies.js"></script>
+  <script src="js/models/mdbdatas.js"></script>
   <!-- to activate the test runner, add the "?test" query string parameter -->
   <script src="tests/runner.js"></script>
 </body>

@@ -1,6 +1,7 @@
 VideoLoader.Movie = DS.Model.extend({
   name: DS.attr('string'),
-  path: DS.attr('string')
+  path: DS.attr('string'),
+  mdbdatas: DS.hasMany('mdbdata', {async: true})
 });
 
 VideoLoader.Movie.FIXTURES = [
