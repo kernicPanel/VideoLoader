@@ -9,6 +9,7 @@ console.log("moviedb credential : ", credential.themoviedb.apiKey);
 var finder = require('findit')('/home/nc/1pad/movies');
 var path = require('path');
 var movies = [];
+var mdbdatas = [];
 var index = 0;
 
 finder.on('directory', function (dir, stat, stop) {
@@ -19,18 +20,56 @@ finder.on('directory', function (dir, stat, stop) {
 
 finder.on('file', function (file, stat) {
   //console.log(file);
+  var name = path.basename(file, path.extname(file));
+  //movie = {
   movies.push({
     id: index++,
     path: file,
-    name: path.basename(file, path.extname(file))
+    name: name,
+    mdbdatas: []
   });
+  /*
+   *mdb.searchMovie({query: movie.name }, function(err, mdbRes){
+   *  console.log("===>", mdbRes);
+   *  if (!! mdbRes) {
+   *    for (var j=0; j < mdbRes.results.length; ++j) {
+   *      var result = mdbRes.results[j];
+   *      result.image = "http://image.tmdb.org/t/p/w154" + result.poster_path;
+   *      mdbdatas.push(result);
+   *      movie.mdbdatas.push(result.id);
+   *    }
+   *  }
+   *  movies.push(movie);
+   *});
+   */
 });
 
 finder.on('link', function (link, stat) {
   console.log(link);
 });
 
+var addData = function (movie, id) {
+  movie.mdbdatas = [];
+
+  mdb.searchMovie({query: movie.name }, function(err, mdbRes){
+    console.log("===>", mdbRes);
+    if (!! mdbRes) {
+      for (var j=0; j < mdbRes.results.length; ++j) {
+        var result = mdbRes.results[j];
+        result.image = "http://image.tmdb.org/t/p/w154" + result.poster_path;
+        mdbdatas.push(result);
+        movies[id].mdbdatas.push(result.id);
+      }
+    }
+  });
+}
+
 finder.on('end', function () {
+
+  for (var i=0; i < movies.length; ++i) {
+    var movie = movies[i];
+    addData(movie, i);
+  }
 
   videoLoader.get('/', function(req, res){
     //res.send('Hello World !!');
@@ -50,7 +89,10 @@ finder.on('end', function () {
   });
 
   videoLoader.get('/movies', function(req, res){
-    res.send({movies: movies});
+    res.send({
+      movies: movies,
+      mdbdatas: mdbdatas
+    });
   });
 
   videoLoader.get('/movies/:id', function(req, res){
