@@ -2,3 +2,7 @@
 .ember-application {
     margin: 20px;
 }
+
+h3 input {
+  width: 100%;
+}

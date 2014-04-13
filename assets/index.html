@@ -33,9 +33,12 @@
 
   <script type="text/x-handlebars" data-template-name="movie">
     <a href="/#">back</a>
-
-    <h3>{{name}}</h3>
-    <p>{{path}}</p>
+    {{#if isEditing}}
+      <h3>{{edit-movie class="edit" value=name focus-out="cancelChanges" insert-newline="acceptChanges"}}</h3>
+    {{else}}
+      <h3 {{action "editMovie" on="doubleClick"}}>{{name}}</h3>
+      <p>{{path}}</p>
+    {{/if}}
 
   </script>
 
@@ -43,9 +46,12 @@
   <script src="js/libs/handlebars-1.1.2.js"></script>
   <script src="js/libs/ember-1.5.0.js"></script>
   <script src="js/libs/ember-data-1.0.0-beta.7.js"></script>
+  <script src="js/libs/themoviedb.js"></script>
   <script src="js/application.js"></script>
   <script src="js/router.js"></script>
   <script src="js/models/movies.js"></script>
+  <script src="js/controllers/movies.js"></script>
+  <script src="js/views/edit_movie_view.js"></script>
   <!-- to activate the test runner, add the "?test" query string parameter -->
   <script src="tests/runner.js"></script>
 </body>
